@@ -10,6 +10,7 @@ using NMPB.Timers;
 using Sanford.Multimedia.Midi;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 namespace PlayModes
@@ -35,6 +36,9 @@ namespace PlayModes
         private Sustain _sustain = new Sustain();
         private DefaultRoomControls _controls;
         private long _notesCount;
+        public Text noteCountText;
+
+        private Text Notes;
 
         void Start ()
         {
@@ -56,6 +60,8 @@ namespace PlayModes
             //_sequencer.Start(); 
             //_sequencer.Position = (int) (_sequencer.Sequence.GetLength()*0.80);
             StartCoroutine(DelayedStart());
+
+            Notes = GameObject.Find("Notes").GetComponent<Text>();
         }
 
         private void SetupMidiDevice()
@@ -196,6 +202,7 @@ namespace PlayModes
         private void PlaySound(ChannelMessage message)
         {
             _notesCount++;
+            Notes.text = "Notes: " + _notesCount;
             if (Globals.Settings == null || Globals.Settings.UseBuildInAduio)
             {
                 Processor.Play(
