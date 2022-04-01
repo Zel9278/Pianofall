@@ -12,6 +12,7 @@ using Sanford.Multimedia.Midi;
 using NMPB.Timers;
 using Shaders;
 using UnityEngine.Analytics;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class PrerenderSequencer : MonoBehaviour
@@ -36,6 +37,8 @@ public class PrerenderSequencer : MonoBehaviour
 
     private int _vSync;
     private int _captureFramerate;
+
+    private Text Notes;
 
     void Start()
     {
@@ -63,6 +66,8 @@ public class PrerenderSequencer : MonoBehaviour
         //_sequencer.Position = (int) (_sequencer.Sequence.GetLength()*0.30);
         GameObject.Find("Main Camera").GetComponent<PreparePng>().enabled = true;
         StartCoroutine(DelayedStart());
+
+        Notes = GameObject.Find("Notes").GetComponent<Text>();
         
     }
 
@@ -167,6 +172,7 @@ public class PrerenderSequencer : MonoBehaviour
 
         _doubles[e.Message.Data1] = _renderTime;
         _playedNotes++;
+        Notes.text = "Notes: " + _playedNotes;
         _queue.InsertNote(e.Message.Data1, _renderTime + 50, NoteHelper.GetColor(e.Message));
 
     }

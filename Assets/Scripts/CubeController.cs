@@ -30,7 +30,7 @@ public class CubeController : MonoBehaviour
         var obj = Pool[Iterator];
         obj.SetActive(true);
         obj.transform.position = pos;
-        obj.transform.rotation = Quaternion.identity;
+        obj.transform.rotation = new Quaternion(0, 180, 0, 0);
         var rigid = obj.GetComponent<Rigidbody>();
         if (rigid != null)
         {

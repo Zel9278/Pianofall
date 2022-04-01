@@ -101,7 +101,7 @@ public class Settings
             {"h|help", "Show help message", v => showHelp = v!=null},
             {"v|volume=", "Audio volume.",(int v) => Volume = v},
             {"c|color=","Color config", v => ColorConfig = v},
-            {"bgc|bgcolor=", "Background color", v => BackgroundColor = v},
+            {"bgc|bgcolor=", "Background color", v => BackgroundColor = v + "55"},
             {"fc|floorcolor=", "Floor color", v => FloorColor = v},
         };
 #if UNITY_EDITOR
