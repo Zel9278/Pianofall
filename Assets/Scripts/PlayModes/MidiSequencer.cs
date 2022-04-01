@@ -36,9 +36,14 @@ namespace PlayModes
         private Sustain _sustain = new Sustain();
         private DefaultRoomControls _controls;
         private long _notesCount;
+        private long _npsCount;
         public Text noteCountText;
 
         private Text Notes;
+        private Text NPS;
+
+        public float span = 1f;
+        private float currentTime = 0f;
 
         void Start ()
         {
@@ -62,6 +67,7 @@ namespace PlayModes
             StartCoroutine(DelayedStart());
 
             Notes = GameObject.Find("Notes").GetComponent<Text>();
+            NPS = GameObject.Find("NPS").GetComponent<Text>();
         }
 
         private void SetupMidiDevice()
@@ -202,6 +208,7 @@ namespace PlayModes
         private void PlaySound(ChannelMessage message)
         {
             _notesCount++;
+            _npsCount++;
             Notes.text = "Notes: " + _notesCount;
             if (Globals.Settings == null || Globals.Settings.UseBuildInAduio)
             {
@@ -215,6 +222,13 @@ namespace PlayModes
 
         void Update ()
         {
+            currentTime += Time.deltaTime;
+            if(currentTime > span){
+                NPS.text = "NPS: " + _npsCount;
+                _npsCount = 0;
+                currentTime = 0f;
+            }
+
             _frames++;
             var transpose = 0;
             if (Input.GetKey(KeyCode.LeftShift)) transpose += 1;
