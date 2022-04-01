@@ -31,6 +31,7 @@ public class PrerenderSequencer : MonoBehaviour
     private long[] _doubles = new long[128];
     private long _playedNotes = 0;
     private long _totalNotes = 0;
+    private long _npsCount = 0;
     private int[] _overloads;
     public double Volume = 0.5;
     private int _currentFrame;
@@ -39,6 +40,10 @@ public class PrerenderSequencer : MonoBehaviour
     private int _captureFramerate;
 
     private Text Notes;
+    private Text NPS;
+
+    public float span = 1f;
+    private float currentTime = 0f;
 
     void Start()
     {
@@ -68,7 +73,7 @@ public class PrerenderSequencer : MonoBehaviour
         StartCoroutine(DelayedStart());
 
         Notes = GameObject.Find("Notes").GetComponent<Text>();
-        
+        NPS = GameObject.Find("NPS").GetComponent<Text>();
     }
 
     private void OnRelease(object sender, NoteReleasedEventArgs e)
@@ -172,6 +177,7 @@ public class PrerenderSequencer : MonoBehaviour
 
         _doubles[e.Message.Data1] = _renderTime;
         _playedNotes++;
+        _npsCount++;
         Notes.text = "Notes: " + _playedNotes;
         _queue.InsertNote(e.Message.Data1, _renderTime + 50, NoteHelper.GetColor(e.Message));
 
@@ -185,6 +191,13 @@ public class PrerenderSequencer : MonoBehaviour
 
     void Update()
     {
+        currentTime += Time.deltaTime;
+        if(currentTime > span){
+            NPS.text = "NPS: " + _npsCount;
+            _npsCount = 0;
+            currentTime = 0f;
+        }
+
         var bufferLength = Time.frameCount%2 == 0 ? 367 : 368;
         var buffer = new float[bufferLength*2];
         Audio.OnAudioFilterRead(buffer, 2, _audioTime);
