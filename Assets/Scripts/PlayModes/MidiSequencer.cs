@@ -41,6 +41,11 @@ namespace PlayModes
 
         private Text Notes;
         private Text NPS;
+        private Text FPS;
+
+        int frameCount;
+        float prevTime;
+        float fps;
 
         public float span = 1f;
         private float currentTime = 0f;
@@ -68,6 +73,10 @@ namespace PlayModes
 
             Notes = GameObject.Find("Notes").GetComponent<Text>();
             NPS = GameObject.Find("NPS").GetComponent<Text>();
+            FPS = GameObject.Find("FPS").GetComponent<Text>();
+
+            frameCount = 0;
+            prevTime = 0.0f;
         }
 
         private void SetupMidiDevice()
@@ -227,6 +236,17 @@ namespace PlayModes
                 NPS.text = "NPS: " + _npsCount;
                 _npsCount = 0;
                 currentTime = 0f;
+            }
+
+            frameCount++;
+            float time = Time.realtimeSinceStartup - prevTime;
+
+            if (time >= 0.5f) {
+                fps = frameCount / time;
+                FPS.text = "FPS: " + fps;
+
+                frameCount = 0;
+                prevTime = Time.realtimeSinceStartup;
             }
 
             _frames++;

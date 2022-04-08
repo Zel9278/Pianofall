@@ -41,6 +41,7 @@ public class PrerenderSequencer : MonoBehaviour
 
     private Text Notes;
     private Text NPS;
+    private Text FPS;
 
     public float span = 1f;
     private float currentTime = 0f;
@@ -74,6 +75,7 @@ public class PrerenderSequencer : MonoBehaviour
 
         Notes = GameObject.Find("Notes").GetComponent<Text>();
         NPS = GameObject.Find("NPS").GetComponent<Text>();
+        FPS = GameObject.Find("FPS").GetComponent<Text>();
     }
 
     private void OnRelease(object sender, NoteReleasedEventArgs e)
